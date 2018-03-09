@@ -1,5 +1,6 @@
 var borderSize = 0.75;
 var active = [false, false, false, false, false, false, false, false, false, false, false, false];
+var ctx;
 //var canvas = document.getElementById("draw");
 
 function getHight() {
@@ -36,7 +37,7 @@ function getRadius() {
 	}
 }
 
-function drawCicel(ctx) {
+function drawCicel() {
 	ctx.lineWidth = 15 * (getRadius() / 200);
 	ctx.fillStyle = "#eaeaea";
 	ctx.beginPath();
@@ -49,7 +50,7 @@ function drawCicel(ctx) {
 	//ctx.stroke();
 }
 
-function drawText(ctx, txt, size, x, y, color) {
+function drawText( txt, size, x, y, color) {
 	ctx.fillStyle = color;
 	rad = getRadius();
 	size *= (rad / 200)
@@ -57,7 +58,7 @@ function drawText(ctx, txt, size, x, y, color) {
 	ctx.fillText(txt, x - (ctx.measureText(txt).width / 2), y + (size / 2.5));
 }
 
-function drawImage(ctx, src, x, y, dow) {
+function drawImage( src, x, y, dow) {
 	var img = new Image();
 
 	img.onload = function () {
@@ -67,9 +68,9 @@ function drawImage(ctx, src, x, y, dow) {
 	img.src = src;
 }
 
-function setUnderTitel(ctx, txt) {
+function setUnderTitel( txt) {
 	ctx.font = 50 + "px Arial";
-	drawText(ctx, txt, 50, (getWidht() / 2), (getHight() * 0.90), "#121212");
+	drawText( txt, 50, (getWidht() / 2), (getHight() * 0.90), "#121212");
 }
 
 function getPosFor(deg) {
@@ -94,21 +95,19 @@ function getDegs() {
 	return degs;
 }
 
-function drawDiagram(ctx) {
+function drawDiagram() {
 	degs = getDegs();
 
 	str = ["0", "E", "T", "9", "8", "7", "6", "5", "4", "3", "2", "1"];
 
 	for (i = 0; i < 12; i++) {
 
-		drawText(ctx, str[i], 30, degs[i][0], degs[i][1], "#363030");
+		drawText( str[i], 30, degs[i][0], degs[i][1], "#363030");
 	}
 }
 
-function activate(ctx, deg, color, siz) {
-	canvas = document.getElementById("draw");
-
-	var ctx = canvas.getContext("2d");
+function activate( deg, color, siz) {
+	
 	rad = 20 * (getRadius() / 200)
 	ctx.lineWidth = 4 * (getRadius() / 200) * siz;
 	pos = getPosFor(deg);
@@ -131,20 +130,19 @@ function getBtnPos() {
 }
 
 function drawButtons() {
-	canvas = document.getElementById("draw");
-	var ctx = canvas.getContext("2d");
+	
 
-	drawImage(ctx, "RCl.svg", borderSize * 100, (getHight() * 0.90), 0.3);
-	drawImage(ctx, "RACl.svg", getWidht() - (borderSize * 100), getHight() * 0.90, 0.3);
+	drawImage( "RCl.svg", borderSize * 100, (getHight() * 0.90), 0.3);
+	drawImage( "RACl.svg", getWidht() - (borderSize * 100), getHight() * 0.90, 0.3);
 }
 
 function drawActivstion() {
 	for (i = 0; i < 12; i++) {
 		if (!active[i]) {
-			activate(ctx, i * (Math.PI / 6), "#eaeaea", 1.5);
+			activate( i * (Math.PI / 6), "#eaeaea", 1.5);
 
 		} else {
-			activate(ctx, i * (Math.PI / 6), "#191919", 1);
+			activate( i * (Math.PI / 6), "#191919", 1);
 
 		}
 	}
@@ -175,19 +173,20 @@ function getVector() {
 
 function resize() {
 	resizeCanvas();
-	canvas = document.getElementById("draw");
-
-	ctx = canvas.getContext("2d");
-	drawCicel(ctx);
+	
+	drawCicel();
 	var txt = getVector();
-	setUnderTitel(ctx, txt);
-	drawDiagram(ctx);
+	setUnderTitel( txt);
+	drawDiagram();
 	drawActivstion();
 	drawButtons();
 
 }
 
 function onLoad() {
+	canvas = document.getElementById("draw");
+
+	ctx = canvas.getContext("2d");
 	resize();
 	
 
@@ -220,8 +219,6 @@ function btnPressed(id) {
 
 function onMouseDown(e) {
 	e = e || window.event;
-	canvas = document.getElementById("draw");
-	ctx = canvas.getContext("2d");
 	x = e.clientX - 8;
 	y = e.clientY - 8;
 	posi = [x, y];
@@ -232,10 +229,10 @@ function onMouseDown(e) {
 	for (i = 0; i < 12; i++) {
 		if (disrace(posi, degs[i]) <= rad) {
 			if (active[i]) {
-				activate(ctx, i * (Math.PI / 6), "#eaeaea", 1.5);
+				activate( i * (Math.PI / 6), "#eaeaea", 1.5);
 				active[i] = false;
 			} else {
-				activate(ctx, i * (Math.PI / 6), "#191919", 1);
+				activate( i * (Math.PI / 6), "#191919", 1);
 				active[i] = true;
 			}
 		}
