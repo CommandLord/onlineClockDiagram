@@ -4,9 +4,10 @@ var ctx;
 
 var circleColor = "#343434";
 var textColor = "#919191";
-var activeColor="#222222";
+var markerColor="#70838d";
 var underTitelColor= "#525252";
-var backroundColor = "#141414"
+var backroundColor = "#1a1a1a";
+var activeColor = "#517ca7";
 
 
 function getHight() {
@@ -110,8 +111,13 @@ function drawDiagram() {
 	str = ["0", "E", "T", "9", "8", "7", "6", "5", "4", "3", "2", "1"];
 
 	for (i = 0; i < 12; i++) {
-
-		drawText(str[i], 30, degs[i][0], degs[i][1], textColor);
+		if(active[i]){
+			color = activeColor;
+		}
+		else{
+			color = textColor;
+		}
+		drawText(str[i], 30, degs[i][0], degs[i][1], color);
 	}
 }
 
@@ -151,7 +157,7 @@ function drawActivstion() {
 			activate(i * (Math.PI / 6), circleColor, 1.5);
 
 		} else {
-			activate(i * (Math.PI / 6), activeColor, 1);
+			activate(i * (Math.PI / 6), markerColor, 1);
 
 		}
 	}
@@ -180,16 +186,19 @@ function getVector() {
 	return "<" + vect[0] + " " + vect[1] + " " + vect[2] + " " + vect[3] + " " + vect[4] + " " + vect[5] + ">"
 }
 
-function resize() {
-	resizeCanvas();
-
+function update(){
 	drawCicel();
 	var txt = getVector();
 	setUnderTitel(txt);
 	drawDiagram();
 	drawActivstion();
 	drawButtons();
+}
 
+function resize() {
+	resizeCanvas();
+	update();
+	
 }
 
 function onLoad() {
@@ -255,5 +264,5 @@ function onMouseDown(e) {
 			btnPressed(i);
 		}
 	}
-	resize();
+	update();
 }
