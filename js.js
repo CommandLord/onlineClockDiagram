@@ -246,12 +246,14 @@ function onMouseDown(e) {
 	x = e.clientX - 8;
 	y = e.clientY - 8;
 	posi = [x, y];
+	upd = false;
 	rad = 15 * (getRadius() / 200);
 
 	//numbers
 	degs = getDegs();
 	for (i = 0; i < 12; i++) {
 		if (disrace(posi, degs[i]) <= rad) {
+			upd = true;
 			if (active[i]) {
 				activate(i * (Math.PI / 6), "#eaeaea", 1.5);
 				active[i] = false;
@@ -267,7 +269,9 @@ function onMouseDown(e) {
 	for (i = 0; i < btns.length; i++) {
 		if (disrace(posi, btns[i]) <= rad) {
 			btnPressed(i);
+			upd = true
 		}
 	}
-	update();
+	if (upd){update();}
+	
 }
