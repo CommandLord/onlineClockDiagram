@@ -80,6 +80,11 @@ function drawImage(src, x, y, dow) {
 function setUnderTitel(txt) {
 	
 	ctx.font = 50 + "px Arial";
+	ctx.fillStyle = backroundColor;
+	rad = getRadius();
+	si = 50*(rad / 200)
+	ctx.font = si + "px Baloo, cursive";
+	ctx.fillRect(((getWidht() / 2)- (ctx.measureText(txt).width / 2))*0.75, ((getHight() * 0.90)- (si / 2.5)),ctx.measureText(txt).width*2,(si));
 	drawText(txt, 50, (getWidht() / 2), (getHight() * 0.90), underTitelColor);
 }
 
