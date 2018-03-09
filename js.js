@@ -1,7 +1,13 @@
 var borderSize = 0.75;
 var active = [false, false, false, false, false, false, false, false, false, false, false, false];
 var ctx;
-//var canvas = document.getElementById("draw");
+
+var circleColor = "#343434";
+var textColor = "#919191";
+var activeColor="#222222";
+var underTitelColor= "#525252";
+var backroundColor = "#141414"
+
 
 function getHight() {
 	var w = window;
@@ -39,18 +45,19 @@ function getRadius() {
 
 function drawCicel() {
 	ctx.lineWidth = 15 * (getRadius() / 200);
-	ctx.fillStyle = "#eaeaea";
-	ctx.beginPath();
+	ctx.fillStyle = circleColor;
+	
 	he = getHight();
 	wi = getWidht();
 	radius = getRadius() * 1.1;
+	
+	ctx.beginPath();
 	ctx.arc(wi / 2, he * 0.85 / 2, radius, 0, 2 * Math.PI);
-	ctx.closePath()
+	ctx.closePath();
 	ctx.fill();
-	//ctx.stroke();
 }
 
-function drawText( txt, size, x, y, color) {
+function drawText(txt, size, x, y, color) {
 	ctx.fillStyle = color;
 	rad = getRadius();
 	size *= (rad / 200)
@@ -58,7 +65,7 @@ function drawText( txt, size, x, y, color) {
 	ctx.fillText(txt, x - (ctx.measureText(txt).width / 2), y + (size / 2.5));
 }
 
-function drawImage( src, x, y, dow) {
+function drawImage(src, x, y, dow) {
 	var img = new Image();
 
 	img.onload = function () {
@@ -66,11 +73,13 @@ function drawImage( src, x, y, dow) {
 		ctx.drawImage(img, x - (i / 2), y - (i / 2), i, i);
 	};
 	img.src = src;
+	img.style.fill = "#ef1919";
 }
 
-function setUnderTitel( txt) {
+function setUnderTitel(txt) {
+	
 	ctx.font = 50 + "px Arial";
-	drawText( txt, 50, (getWidht() / 2), (getHight() * 0.90), "#121212");
+	drawText(txt, 50, (getWidht() / 2), (getHight() * 0.90), underTitelColor);
 }
 
 function getPosFor(deg) {
@@ -102,12 +111,12 @@ function drawDiagram() {
 
 	for (i = 0; i < 12; i++) {
 
-		drawText( str[i], 30, degs[i][0], degs[i][1], "#363030");
+		drawText(str[i], 30, degs[i][0], degs[i][1], textColor);
 	}
 }
 
-function activate( deg, color, siz) {
-	
+function activate(deg, color, siz) {
+
 	rad = 20 * (getRadius() / 200)
 	ctx.lineWidth = 4 * (getRadius() / 200) * siz;
 	pos = getPosFor(deg);
@@ -130,19 +139,19 @@ function getBtnPos() {
 }
 
 function drawButtons() {
-	
 
-	drawImage( "RCl.svg", borderSize * 100, (getHight() * 0.90), 0.3);
-	drawImage( "RACl.svg", getWidht() - (borderSize * 100), getHight() * 0.90, 0.3);
+
+	drawImage("RCl.svg", borderSize * 100, (getHight() * 0.90), 0.3);
+	drawImage("RACl.svg", getWidht() - (borderSize * 100), getHight() * 0.90, 0.3);
 }
 
 function drawActivstion() {
 	for (i = 0; i < 12; i++) {
 		if (!active[i]) {
-			activate( i * (Math.PI / 6), "#eaeaea", 1.5);
+			activate(i * (Math.PI / 6), circleColor, 1.5);
 
 		} else {
-			activate( i * (Math.PI / 6), "#191919", 1);
+			activate(i * (Math.PI / 6), activeColor, 1);
 
 		}
 	}
@@ -161,22 +170,22 @@ function getVector() {
 	for (i = 0; i < active.length - 1; i++) {
 		if (active[i]) {
 			for (j = i + 1; j < active.length; j++) {
-				if(active[j]){
-					iv = getInterval(i,j);
-					vect[iv-1]++;
+				if (active[j]) {
+					iv = getInterval(i, j);
+					vect[iv - 1]++;
 				}
 			}
 		}
 	}
-	return "<"+vect[0]+" "+vect[1]+" "+vect[2]+" "+vect[3]+" "+vect[4]+" "+vect[5]+">"
+	return "<" + vect[0] + " " + vect[1] + " " + vect[2] + " " + vect[3] + " " + vect[4] + " " + vect[5] + ">"
 }
 
 function resize() {
 	resizeCanvas();
-	
+
 	drawCicel();
 	var txt = getVector();
-	setUnderTitel( txt);
+	setUnderTitel(txt);
 	drawDiagram();
 	drawActivstion();
 	drawButtons();
@@ -185,10 +194,11 @@ function resize() {
 
 function onLoad() {
 	canvas = document.getElementById("draw");
-
 	ctx = canvas.getContext("2d");
+	document.body.style.backgroundColor = backroundColor;
+	canvas.style.backgroundColor = backroundColor;
 	resize();
-	
+
 
 }
 
@@ -229,10 +239,10 @@ function onMouseDown(e) {
 	for (i = 0; i < 12; i++) {
 		if (disrace(posi, degs[i]) <= rad) {
 			if (active[i]) {
-				activate( i * (Math.PI / 6), "#eaeaea", 1.5);
+				activate(i * (Math.PI / 6), "#eaeaea", 1.5);
 				active[i] = false;
 			} else {
-				activate( i * (Math.PI / 6), "#191919", 1);
+				activate(i * (Math.PI / 6), "#191919", 1);
 				active[i] = true;
 			}
 		}
