@@ -62,7 +62,7 @@ function drawText(txt, size, x, y, color) {
 	ctx.fillStyle = color;
 	rad = getRadius();
 	size *= (rad / 200)
-	ctx.font = size + "px Baloo, cursive";
+	ctx.font = size + "px Verdana";
 	ctx.fillText(txt, x - (ctx.measureText(txt).width / 2), y + (size / 2.5));
 }
 
@@ -150,8 +150,6 @@ function getBtnPos() {
 }
 
 function drawButtons() {
-
-
 	drawImage("RCl.svg", borderSize * 100, (getHight() * 0.90), 0.3);
 	drawImage("RACl.svg", getWidht() - (borderSize * 100), getHight() * 0.90, 0.3);
 }
